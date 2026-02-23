@@ -20,7 +20,7 @@ export const projects: Project[] = [
   },
   {
     title: "Akonzas",
-    category: "Vitrine",
+    category: "Site vitrine",
     city: "Rabat",
     objective: "Site web + Seo + Automatisation IA Email",
     result: "Résultats en cours",

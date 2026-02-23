@@ -8,7 +8,7 @@ type Props = {
 };
 
 function makeStream(len: number) {
-  const chars = "01アイウエオカキクケコサシスセソ0123456789";
+  const chars = "0101010101010101010101010101010";
   let s = "";
   for (let i = 0; i < len; i++) {
     s += chars[Math.floor(Math.random() * chars.length)] + " ";
