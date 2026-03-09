@@ -1,9 +1,11 @@
+"use client";
+
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import PageHeader from "@/components/ui/PageHeader";
 import Reveal from "@/components/ui/Reveal";
 import Link from "next/link";
-import { Globe, Search, Megaphone, Bot, Check } from "lucide-react";
+import { Globe, Search, Megaphone, Bot, Check, Sparkles } from "lucide-react";
 
 const blocks = [
   {
@@ -18,6 +20,7 @@ const blocks = [
       "Base SEO intégrée",
     ],
     cta: { label: "Devis site web", href: "/contact" },
+    accent: "cyan",
   },
   {
     title: "SEO local (Google & Maps)",
@@ -31,6 +34,7 @@ const blocks = [
       "Suivi & recommandations",
     ],
     cta: { label: "Devis SEO", href: "/contact" },
+    accent: "indigo",
   },
   {
     title: "Publicité Meta & Google",
@@ -44,6 +48,7 @@ const blocks = [
       "Reporting clair",
     ],
     cta: { label: "Lancer une campagne", href: "/contact" },
+    accent: "violet",
   },
   {
     title: "Automatisation & IA",
@@ -58,8 +63,38 @@ const blocks = [
     ],
     highlight: true,
     cta: { label: "Découvrir l’offre IA", href: "/automatisation-ia" },
+    accent: "cyan",
   },
 ];
+
+function accentStyles(accent: string) {
+  switch (accent) {
+    case "violet":
+      return {
+        ring: "ring-violet-200",
+        iconBg: "bg-violet-50",
+        iconText: "text-violet-600",
+        dot: "bg-violet-600",
+        glow: "shadow-[0_0_40px_rgba(139,92,246,0.10)]",
+      };
+    case "indigo":
+      return {
+        ring: "ring-indigo-200",
+        iconBg: "bg-indigo-50",
+        iconText: "text-indigo-600",
+        dot: "bg-indigo-600",
+        glow: "shadow-[0_0_40px_rgba(99,102,241,0.10)]",
+      };
+    default:
+      return {
+        ring: "ring-cyan-200",
+        iconBg: "bg-cyan-50",
+        iconText: "text-cyan-600",
+        dot: "bg-cyan-600",
+        glow: "shadow-[0_0_40px_rgba(34,211,238,0.10)]",
+      };
+  }
+}
 
 export default function ServicesPage() {
   return (
@@ -78,22 +113,60 @@ export default function ServicesPage() {
         />
 
         {/* Grid services */}
-        <section className="py-20 bg-white">
-          <div className="mx-auto max-w-6xl px-4">
-            <div className="grid gap-6 md:grid-cols-2">
+        <section className="relative overflow-hidden bg-white py-16 md:py-20">
+          <div className="pointer-events-none absolute inset-0 opacity-60">
+            <div className="absolute -top-40 left-1/2 h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-indigo-500/8 blur-3xl" />
+            <div className="absolute bottom-[-140px] right-[-140px] h-[440px] w-[440px] rounded-full bg-cyan-400/8 blur-3xl" />
+          </div>
+
+          <div className="pointer-events-none absolute inset-0 opacity-[0.04]">
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(0,0,0,0.5)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.5)_1px,transparent_1px)] bg-[size:44px_44px]" />
+          </div>
+
+          <div className="relative z-10 mx-auto max-w-6xl px-4">
+            <Reveal>
+              <div className="mx-auto max-w-3xl text-center">
+                <div className="inline-flex items-center gap-2 rounded-full border bg-white px-4 py-2 text-xs font-medium text-gray-800 shadow-sm">
+                  <Sparkles className="h-4 w-4 text-cyan-500" />
+                  Nos services
+                </div>
+
+                <h2 className="mt-5 text-3xl font-bold tracking-tight text-gray-900 md:text-4xl">
+                  Une offre claire pour{" "}
+                  <span className="bg-gradient-to-r from-cyan-500 via-indigo-500 to-violet-500 bg-clip-text text-transparent">
+                    générer plus d’opportunités
+                  </span>
+                </h2>
+
+                <p className="mt-3 text-lg text-gray-700">
+                  Sites web, SEO local, publicité et automatisation IA : des services pensés pour attirer, convertir et suivre vos prospects.
+                </p>
+              </div>
+            </Reveal>
+
+            <div className="mt-12 grid gap-6 md:grid-cols-2">
               {blocks.map((b, idx) => {
                 const Icon = b.icon;
+                const a = accentStyles(b.accent);
+
                 return (
                   <Reveal key={b.title} delay={idx * 0.06}>
-                    <div
+                    <article
                       className={[
                         "rounded-3xl border bg-white p-7 shadow-sm transition duration-200 hover:-translate-y-0.5 hover:shadow-md",
+                        a.glow,
                         b.highlight ? "border-blue-200 ring-1 ring-blue-100" : "",
                       ].join(" ")}
                     >
                       <div className="flex items-start gap-4">
-                        <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-50">
-                          <Icon className="h-6 w-6 text-blue-600" />
+                        <div
+                          className={[
+                            "flex h-12 w-12 items-center justify-center rounded-2xl ring-1",
+                            a.iconBg,
+                            a.ring,
+                          ].join(" ")}
+                        >
+                          <Icon className={["h-6 w-6", a.iconText].join(" ")} />
                         </div>
 
                         <div className="flex-1">
@@ -101,12 +174,14 @@ export default function ServicesPage() {
                             <h2 className="text-xl font-semibold text-gray-900">
                               {b.title}
                             </h2>
+
                             {b.highlight ? (
                               <span className="rounded-full bg-blue-600 px-3 py-1 text-xs font-medium text-white">
                                 Nouveau
                               </span>
                             ) : null}
                           </div>
+
                           <p className="mt-2 text-sm text-gray-700">{b.desc}</p>
                         </div>
                       </div>
@@ -114,7 +189,9 @@ export default function ServicesPage() {
                       <ul className="mt-5 space-y-3 text-sm text-gray-800">
                         {b.bullets.map((x) => (
                           <li key={x} className="flex items-start gap-3">
-                            <Check className="mt-0.5 h-4 w-4 text-blue-600" />
+                            <span
+                              className={["mt-1.5 h-2.5 w-2.5 rounded-full", a.dot].join(" ")}
+                            />
                             <span>{x}</span>
                           </li>
                         ))}
@@ -129,12 +206,12 @@ export default function ServicesPage() {
                         </Link>
                         <Link
                           href="/contact"
-                          className="rounded-full border px-5 py-2.5 text-sm hover:bg-gray-50 transition"
+                          className="rounded-full border border-slate-200 px-5 py-2.5 text-sm font-medium text-gray-700 hover:bg-slate-50 transition"
                         >
                           Parler du projet
                         </Link>
                       </div>
-                    </div>
+                    </article>
                   </Reveal>
                 );
               })}
@@ -143,13 +220,27 @@ export default function ServicesPage() {
         </section>
 
         {/* CTA band */}
-        <section className="border-y bg-slate-50 py-20">
-          <div className="mx-auto max-w-6xl px-4">
+        <section className="relative overflow-hidden bg-white py-16 md:py-20">
+          <div className="pointer-events-none absolute inset-0 opacity-60">
+            <div className="absolute -top-28 left-1/3 h-[320px] w-[320px] rounded-full bg-indigo-500/8 blur-3xl" />
+            <div className="absolute bottom-[-100px] right-1/4 h-[300px] w-[300px] rounded-full bg-cyan-400/8 blur-3xl" />
+          </div>
+
+          <div className="pointer-events-none absolute inset-0 opacity-[0.04]">
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(0,0,0,0.5)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.5)_1px,transparent_1px)] bg-[size:44px_44px]" />
+          </div>
+
+          <div className="relative z-10 mx-auto max-w-6xl px-4">
             <Reveal>
-              <div className="rounded-3xl border bg-white p-10 shadow-sm">
+              <div className="rounded-3xl border bg-white p-10 shadow-sm shadow-[0_0_40px_rgba(34,211,238,0.08)]">
                 <div className="grid gap-6 md:grid-cols-3 md:items-center">
                   <div className="md:col-span-2">
-                    <h3 className="text-2xl font-bold text-gray-900">
+                    <div className="inline-flex items-center gap-2 rounded-full border bg-white px-4 py-2 text-xs font-medium text-gray-800 shadow-sm">
+                      <Sparkles className="h-4 w-4 text-cyan-500" />
+                      Recommandation
+                    </div>
+
+                    <h3 className="mt-4 text-2xl font-bold text-gray-900">
                       Tu veux le meilleur plan pour ton business ?
                     </h3>
                     <p className="mt-2 text-gray-700">
@@ -157,6 +248,7 @@ export default function ServicesPage() {
                       (site + SEO + pubs + automatisation) adaptée.
                     </p>
                   </div>
+
                   <div className="flex flex-col gap-3">
                     <Link
                       href="/contact"

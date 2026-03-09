@@ -6,7 +6,7 @@ import MatrixRain from "@/components/ui/MatrixRain";
 
 export default function AutomationPreview() {
   return (
-    <section className="relative overflow-hidden border-y pt-6 pb-20">
+    <section className="relative -mt-12 -mb-12 overflow-hidden border-y py-12 md:-mt-14 md:-mb-14">
       {/* Matrix background */}
       <div className="absolute inset-0 z-[0]">
         <MatrixRain columns={26} color="blue" />
@@ -32,7 +32,7 @@ export default function AutomationPreview() {
           </p>
         </div>
 
-        <div className="mt-12 grid gap-6 md:grid-cols-2">
+        <div className="mt-8 grid gap-6 md:grid-cols-2">
           {/* Bloc gauche */}
           <div className="rounded-3xl border bg-white/90 p-8 shadow-sm backdrop-blur">
             <h3 className="text-xl font-semibold text-gray-900">

@@ -1,9 +1,19 @@
+"use client";
+
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import PageHeader from "@/components/ui/PageHeader";
 import Reveal from "@/components/ui/Reveal";
 import Link from "next/link";
-import { Check, Bot, ShieldCheck, BarChart3, Megaphone, Search } from "lucide-react";
+import {
+  Check,
+  Bot,
+  ShieldCheck,
+  BarChart3,
+  Megaphone,
+  Search,
+  Sparkles,
+} from "lucide-react";
 
 const oneTimePacks = [
   {
@@ -17,6 +27,7 @@ const oneTimePacks = [
       "Optimisation mobile & vitesse",
       "Support 3 mois",
     ],
+    accent: "cyan",
   },
   {
     name: "Pack E-commerce",
@@ -30,6 +41,7 @@ const oneTimePacks = [
       "Optimisation SEO de base",
       "Support 3 mois",
     ],
+    accent: "indigo",
   },
   {
     name: "Pack Business",
@@ -41,6 +53,7 @@ const oneTimePacks = [
       "SEO avancé",
       "Stratégie digitale intégrée",
     ],
+    accent: "violet",
   },
 ];
 
@@ -56,6 +69,7 @@ const monthlyPacks = [
       "Contenu / pages (selon besoin)",
       "Rapport simple",
     ],
+    accent: "cyan",
   },
   {
     name: "Ads Performance",
@@ -68,6 +82,7 @@ const monthlyPacks = [
       "Optimisation continue",
       "Reporting",
     ],
+    accent: "indigo",
   },
   {
     name: "Full Growth",
@@ -81,8 +96,38 @@ const monthlyPacks = [
       "Optimisation landing",
       "Suivi des leads",
     ],
+    accent: "violet",
   },
 ];
+
+function accentStyles(accent: string) {
+  switch (accent) {
+    case "violet":
+      return {
+        ring: "ring-violet-200",
+        iconBg: "bg-violet-50",
+        iconText: "text-violet-600",
+        dot: "bg-violet-600",
+        glow: "shadow-[0_0_40px_rgba(139,92,246,0.10)]",
+      };
+    case "indigo":
+      return {
+        ring: "ring-indigo-200",
+        iconBg: "bg-indigo-50",
+        iconText: "text-indigo-600",
+        dot: "bg-indigo-600",
+        glow: "shadow-[0_0_40px_rgba(99,102,241,0.10)]",
+      };
+    default:
+      return {
+        ring: "ring-cyan-200",
+        iconBg: "bg-cyan-50",
+        iconText: "text-cyan-600",
+        dot: "bg-cyan-600",
+        glow: "shadow-[0_0_40px_rgba(34,211,238,0.10)]",
+      };
+  }
+}
 
 export default function PricingPage() {
   return (
@@ -101,58 +146,91 @@ export default function PricingPage() {
         />
 
         {/* ONE-TIME PACKS */}
-        <section className="py-20 bg-white">
-          <div className="mx-auto max-w-6xl px-4">
+        <section className="relative overflow-hidden bg-white py-16 md:py-20">
+          <div className="pointer-events-none absolute inset-0 opacity-60">
+            <div className="absolute -top-40 left-1/2 h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-indigo-500/8 blur-3xl" />
+            <div className="absolute bottom-[-140px] right-[-140px] h-[440px] w-[440px] rounded-full bg-cyan-400/8 blur-3xl" />
+          </div>
+
+          <div className="pointer-events-none absolute inset-0 opacity-[0.04]">
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(0,0,0,0.5)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.5)_1px,transparent_1px)] bg-[size:44px_44px]" />
+          </div>
+
+          <div className="relative z-10 mx-auto max-w-6xl px-4">
             <Reveal>
               <div className="mx-auto max-w-3xl text-center">
-                <h2 className="text-3xl font-bold tracking-tight text-gray-900 md:text-4xl">
+                <div className="inline-flex items-center gap-2 rounded-full border bg-white px-4 py-2 text-xs font-medium text-gray-800 shadow-sm">
+                  <Sparkles className="h-4 w-4 text-cyan-500" />
                   Packs de création
+                </div>
+
+                <h2 className="mt-5 text-3xl font-bold tracking-tight text-gray-900 md:text-4xl">
+                  Une base solide pour{" "}
+                  <span className="bg-gradient-to-r from-cyan-500 via-indigo-500 to-violet-500 bg-clip-text text-transparent">
+                    lancer votre présence en ligne
+                  </span>
                 </h2>
+
                 <p className="mt-3 text-lg text-gray-700">
-                  Paiement unique pour la création du site (vitrine, e-commerce ou sur mesure).
+                  Paiement unique pour la création du site vitrine, e-commerce ou sur mesure.
                 </p>
               </div>
             </Reveal>
 
             <div className="mt-12 grid gap-6 md:grid-cols-3">
-              {oneTimePacks.map((o, idx) => (
-                <Reveal key={o.name} delay={idx * 0.06}>
-                  <div
-                    className={[
-                      "rounded-3xl border bg-white p-8 shadow-sm transition duration-200 hover:-translate-y-1 hover:shadow-md",
-                      o.highlight ? "border-blue-500 ring-1 ring-blue-100 scale-[1.02]" : "",
-                    ].join(" ")}
-                  >
-                    <h3 className="text-xl font-semibold text-gray-900">{o.name}</h3>
-                    <p className="mt-2 text-sm text-gray-700">{o.desc}</p>
+              {oneTimePacks.map((o, idx) => {
+                const a = accentStyles(o.accent);
 
-                    <div className="mt-6 text-3xl font-bold text-gray-900">{o.price}</div>
-
-                    <ul className="mt-6 space-y-3 text-sm text-gray-800">
-                      {o.features.map((f) => (
-                        <li key={f} className="flex items-start gap-3">
-                          <Check className="mt-0.5 h-4 w-4 text-blue-600" />
-                          <span>{f}</span>
-                        </li>
-                      ))}
-                    </ul>
-
-                    <Link
-                      href="/contact"
-                      className="mt-8 block rounded-full bg-blue-600 px-6 py-3 text-center text-sm font-medium text-white hover:bg-blue-700 transition"
+                return (
+                  <Reveal key={o.name} delay={idx * 0.06}>
+                    <article
+                      className={[
+                        "rounded-3xl border bg-white p-8 shadow-sm transition duration-200 hover:-translate-y-1 hover:shadow-md",
+                        a.glow,
+                        o.highlight ? "border-blue-500 ring-1 ring-blue-100 scale-[1.02]" : "",
+                      ].join(" ")}
                     >
-                      Demander un devis
-                    </Link>
-                  </div>
-                </Reveal>
-              ))}
+                      <div className="flex items-start justify-between gap-4">
+                        <div>
+                          <h3 className="text-xl font-semibold text-gray-900">{o.name}</h3>
+                          <p className="mt-2 text-sm text-gray-700">{o.desc}</p>
+                        </div>
+
+                        {o.highlight ? (
+                          <span className="rounded-full bg-blue-600 px-3 py-1 text-xs font-medium text-white">
+                            Recommandé
+                          </span>
+                        ) : null}
+                      </div>
+
+                      <div className="mt-6 text-3xl font-bold text-gray-900">{o.price}</div>
+
+                      <ul className="mt-6 space-y-3 text-sm text-gray-800">
+                        {o.features.map((f) => (
+                          <li key={f} className="flex items-start gap-3">
+                            <span className={["mt-1.5 h-2.5 w-2.5 rounded-full", a.dot].join(" ")} />
+                            <span>{f}</span>
+                          </li>
+                        ))}
+                      </ul>
+
+                      <Link
+                        href="/contact"
+                        className="mt-8 block rounded-full bg-blue-600 px-6 py-3 text-center text-sm font-medium text-white hover:bg-blue-700 transition"
+                      >
+                        Demander un devis
+                      </Link>
+                    </article>
+                  </Reveal>
+                );
+              })}
             </div>
 
             <Reveal delay={0.12}>
-              <div className="mt-12 rounded-3xl border bg-blue-50 p-8">
+              <div className="mt-12 rounded-3xl border bg-white p-8 shadow-sm shadow-[0_0_40px_rgba(34,211,238,0.08)]">
                 <div className="flex items-start gap-4">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white shadow-sm">
-                    <ShieldCheck className="h-6 w-6 text-blue-600" />
+                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-cyan-50 ring-1 ring-cyan-200">
+                    <ShieldCheck className="h-6 w-6 text-cyan-600" />
                   </div>
                   <div>
                     <h3 className="text-xl font-semibold text-gray-900">
@@ -169,15 +247,33 @@ export default function PricingPage() {
         </section>
 
         {/* MONTHLY PACKS */}
-        <section className="border-y bg-slate-50 py-20">
-          <div className="mx-auto max-w-6xl px-4">
+        <section className="relative overflow-hidden bg-white py-16 md:py-20">
+          <div className="pointer-events-none absolute inset-0 opacity-60">
+            <div className="absolute -top-32 left-0 h-[420px] w-[420px] rounded-full bg-cyan-400/8 blur-3xl" />
+            <div className="absolute bottom-[-120px] right-0 h-[420px] w-[420px] rounded-full bg-indigo-500/8 blur-3xl" />
+          </div>
+
+          <div className="pointer-events-none absolute inset-0 opacity-[0.04]">
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(0,0,0,0.5)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.5)_1px,transparent_1px)] bg-[size:44px_44px]" />
+          </div>
+
+          <div className="relative z-10 mx-auto max-w-6xl px-4">
             <Reveal>
               <div className="mx-auto max-w-3xl text-center">
-                <h2 className="text-3xl font-bold tracking-tight text-gray-900 md:text-4xl">
+                <div className="inline-flex items-center gap-2 rounded-full border bg-white px-4 py-2 text-xs font-medium text-gray-800 shadow-sm">
+                  <Sparkles className="h-4 w-4 text-cyan-500" />
                   Abonnements mensuels
+                </div>
+
+                <h2 className="mt-5 text-3xl font-bold tracking-tight text-gray-900 md:text-4xl">
+                  Un suivi régulier pour{" "}
+                  <span className="bg-gradient-to-r from-cyan-500 via-indigo-500 to-violet-500 bg-clip-text text-transparent">
+                    accélérer la croissance
+                  </span>
                 </h2>
+
                 <p className="mt-3 text-lg text-gray-700">
-                  Pour grandir mois après mois (SEO, Ads, optimisation).
+                  Pour grandir mois après mois avec SEO, Ads et optimisation.
                 </p>
               </div>
             </Reveal>
@@ -185,18 +281,28 @@ export default function PricingPage() {
             <div className="mt-12 grid gap-6 md:grid-cols-3">
               {monthlyPacks.map((p, idx) => {
                 const Icon = p.icon;
+                const a = accentStyles(p.accent);
+
                 return (
                   <Reveal key={p.name} delay={idx * 0.06}>
-                    <div
+                    <article
                       className={[
                         "rounded-3xl border bg-white p-8 shadow-sm transition duration-200 hover:-translate-y-1 hover:shadow-md",
+                        a.glow,
                         p.highlight ? "border-blue-500 ring-1 ring-blue-100 scale-[1.02]" : "",
                       ].join(" ")}
                     >
                       <div className="flex items-start justify-between gap-4">
-                        <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-50">
-                          <Icon className="h-6 w-6 text-blue-600" />
+                        <div
+                          className={[
+                            "flex h-12 w-12 items-center justify-center rounded-2xl ring-1",
+                            a.iconBg,
+                            a.ring,
+                          ].join(" ")}
+                        >
+                          <Icon className={["h-6 w-6", a.iconText].join(" ")} />
                         </div>
+
                         {p.highlight ? (
                           <span className="rounded-full bg-blue-600 px-3 py-1 text-xs font-medium text-white">
                             Recommandé
@@ -212,7 +318,7 @@ export default function PricingPage() {
                       <ul className="mt-6 space-y-3 text-sm text-gray-800">
                         {p.features.map((f) => (
                           <li key={f} className="flex items-start gap-3">
-                            <Check className="mt-0.5 h-4 w-4 text-blue-600" />
+                            <span className={["mt-1.5 h-2.5 w-2.5 rounded-full", a.dot].join(" ")} />
                             <span>{f}</span>
                           </li>
                         ))}
@@ -224,7 +330,7 @@ export default function PricingPage() {
                       >
                         Discuter du plan
                       </Link>
-                    </div>
+                    </article>
                   </Reveal>
                 );
               })}
@@ -233,17 +339,31 @@ export default function PricingPage() {
         </section>
 
         {/* AUTOMATION */}
-        <section className="py-20 bg-white">
-          <div className="mx-auto max-w-6xl px-4">
+        <section className="relative overflow-hidden bg-white py-16 md:py-20">
+          <div className="pointer-events-none absolute inset-0 opacity-60">
+            <div className="absolute -top-24 right-1/4 h-[380px] w-[380px] rounded-full bg-violet-500/8 blur-3xl" />
+            <div className="absolute bottom-[-120px] left-0 h-[360px] w-[360px] rounded-full bg-cyan-400/8 blur-3xl" />
+          </div>
+
+          <div className="pointer-events-none absolute inset-0 opacity-[0.04]">
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(0,0,0,0.5)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.5)_1px,transparent_1px)] bg-[size:44px_44px]" />
+          </div>
+
+          <div className="relative z-10 mx-auto max-w-6xl px-4">
             <Reveal>
-              <div className="rounded-3xl border bg-slate-50 p-10">
+              <div className="rounded-3xl border bg-white p-10 shadow-sm shadow-[0_0_40px_rgba(99,102,241,0.08)]">
                 <div className="grid gap-6 md:grid-cols-3 md:items-center">
                   <div className="flex items-center gap-4 md:col-span-2">
-                    <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white shadow-sm">
-                      <Bot className="h-7 w-7 text-blue-600" />
+                    <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-cyan-50 ring-1 ring-cyan-200">
+                      <Bot className="h-7 w-7 text-cyan-600" />
                     </div>
                     <div>
-                      <h2 className="text-2xl font-bold text-gray-900">
+                      <div className="inline-flex items-center gap-2 rounded-full border bg-white px-4 py-2 text-xs font-medium text-gray-800 shadow-sm">
+                        <Sparkles className="h-4 w-4 text-cyan-500" />
+                        Automatisation & IA
+                      </div>
+
+                      <h2 className="mt-4 text-2xl font-bold text-gray-900">
                         Automatisation WhatsApp & IA
                       </h2>
                       <p className="mt-2 text-gray-700">
@@ -276,19 +396,34 @@ export default function PricingPage() {
         </section>
 
         {/* FINAL CTA */}
-        <section className="border-t bg-slate-50 py-20">
-          <div className="mx-auto max-w-6xl px-4">
+        <section className="relative overflow-hidden bg-white py-16 md:py-20">
+          <div className="pointer-events-none absolute inset-0 opacity-60">
+            <div className="absolute -top-28 left-1/3 h-[320px] w-[320px] rounded-full bg-indigo-500/8 blur-3xl" />
+            <div className="absolute bottom-[-100px] right-1/4 h-[300px] w-[300px] rounded-full bg-cyan-400/8 blur-3xl" />
+          </div>
+
+          <div className="pointer-events-none absolute inset-0 opacity-[0.04]">
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(0,0,0,0.5)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.5)_1px,transparent_1px)] bg-[size:44px_44px]" />
+          </div>
+
+          <div className="relative z-10 mx-auto max-w-6xl px-4">
             <Reveal>
-              <div className="rounded-3xl border bg-white p-10 shadow-sm">
+              <div className="rounded-3xl border bg-white p-10 shadow-sm shadow-[0_0_40px_rgba(34,211,238,0.08)]">
                 <div className="grid gap-6 md:grid-cols-3 md:items-center">
                   <div className="md:col-span-2">
-                    <h3 className="text-2xl font-bold text-gray-900">
+                    <div className="inline-flex items-center gap-2 rounded-full border bg-white px-4 py-2 text-xs font-medium text-gray-800 shadow-sm">
+                      <Sparkles className="h-4 w-4 text-cyan-500" />
+                      Recommandation
+                    </div>
+
+                    <h3 className="mt-4 text-2xl font-bold text-gray-900">
                       Tu veux que je te recommande le meilleur pack ?
                     </h3>
                     <p className="mt-2 text-gray-700">
                       Dis-moi ton activité + ville + objectif (leads/RDV/ventes). On te propose un plan clair.
                     </p>
                   </div>
+
                   <div className="flex flex-col gap-3">
                     <Link
                       href="/contact"

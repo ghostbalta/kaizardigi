@@ -74,7 +74,7 @@ export default function Offers() {
   return (
     <section
       id="offres"
-      className="relative overflow-hidden bg-slate-950 pt-16 pb-6 md:pt-20 md:pb-8 text-white"
+      className="relative overflow-hidden bg-slate-950 py-12 md:py-14 text-white"
     >
       {/* Background glow */}
       <div className="pointer-events-none absolute inset-0 opacity-70">

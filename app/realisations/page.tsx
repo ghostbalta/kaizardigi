@@ -7,7 +7,7 @@ import PageHeader from "@/components/ui/PageHeader";
 import Reveal from "@/components/ui/Reveal";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Sparkles } from "lucide-react";
 import { projects } from "@/data/projects";
 
 const categories = ["Tous", "Site web", "E-commerce", "SEO", "IA & Automation"];
@@ -33,11 +33,41 @@ export default function RealisationsPage() {
           primaryLabel="Demander un devis"
         />
 
-        {/* Filters */}
-        <section className="py-16 bg-white">
-          <div className="mx-auto max-w-6xl px-4">
+        {/* Filters + Grid */}
+        <section className="relative overflow-hidden bg-white py-16 md:py-20">
+          <div className="pointer-events-none absolute inset-0 opacity-60">
+            <div className="absolute -top-40 left-1/2 h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-indigo-500/8 blur-3xl" />
+            <div className="absolute bottom-[-140px] right-[-140px] h-[440px] w-[440px] rounded-full bg-cyan-400/8 blur-3xl" />
+          </div>
+
+          <div className="pointer-events-none absolute inset-0 opacity-[0.04]">
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(0,0,0,0.5)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.5)_1px,transparent_1px)] bg-[size:44px_44px]" />
+          </div>
+
+          <div className="relative z-10 mx-auto max-w-6xl px-4">
             <Reveal>
-              <div className="flex flex-wrap justify-center gap-3">
+              <div className="mx-auto max-w-3xl text-center">
+                <div className="inline-flex items-center gap-2 rounded-full border bg-white px-4 py-2 text-xs font-medium text-gray-800 shadow-sm">
+                  <Sparkles className="h-4 w-4 text-cyan-500" />
+                  Portfolio
+                </div>
+
+                <h2 className="mt-5 text-3xl font-bold tracking-tight text-gray-900 md:text-4xl">
+                  Une sélection de projets{" "}
+                  <span className="bg-gradient-to-r from-cyan-500 via-indigo-500 to-violet-500 bg-clip-text text-transparent">
+                    pensés pour la performance
+                  </span>
+                </h2>
+
+                <p className="mt-3 text-lg text-gray-700">
+                  Découvrez quelques projets réalisés en création de site web, e-commerce, SEO et automatisation.
+                </p>
+              </div>
+            </Reveal>
+
+            {/* Filters */}
+            <Reveal>
+              <div className="mt-10 flex flex-wrap justify-center gap-3">
                 {categories.map((c) => (
                   <button
                     key={c}
@@ -45,8 +75,8 @@ export default function RealisationsPage() {
                     className={[
                       "rounded-full px-5 py-2.5 text-sm font-medium transition",
                       active === c
-                        ? "bg-blue-600 text-white"
-                        : "border text-gray-800 hover:bg-gray-50",
+                        ? "bg-blue-600 text-white shadow-sm"
+                        : "border border-slate-200 bg-white text-gray-800 hover:bg-gray-50",
                     ].join(" ")}
                   >
                     {c}
@@ -59,17 +89,20 @@ export default function RealisationsPage() {
             <div className="mt-12 grid gap-6 md:grid-cols-3">
               {filtered.map((p, idx) => (
                 <Reveal key={p.title} delay={idx * 0.05}>
-                  <div className="group overflow-hidden rounded-3xl border bg-white shadow-sm transition duration-200 hover:-translate-y-1 hover:shadow-md">
-                    <div className="relative h-52 w-full bg-gray-100">
+                  <article className="group overflow-hidden rounded-3xl border bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-md shadow-[0_0_40px_rgba(34,211,238,0.06)]">
+                    <div className="relative h-52 w-full bg-gray-100 overflow-hidden">
                       <Image
                         src={p.image}
                         alt={p.title}
                         fill
-                        className="object-cover transition duration-300 group-hover:scale-[1.03]"
+                        className="object-cover transition duration-500 group-hover:scale-[1.04]"
                         sizes="(max-width: 768px) 100vw, 33vw"
                       />
+
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
+
                       <div className="absolute left-4 top-4">
-                        <span className="rounded-full bg-blue-600 px-3 py-1 text-xs font-medium text-white">
+                        <span className="rounded-full bg-blue-600 px-3 py-1 text-xs font-medium text-white shadow-sm">
                           {p.category}
                         </span>
                       </div>
@@ -80,7 +113,11 @@ export default function RealisationsPage() {
                         {p.title}
                       </h3>
 
-                      <p className="mt-3 text-sm text-gray-700">
+                      {"city" in p && p.city ? (
+                        <p className="mt-1 text-sm text-gray-500">{p.city}</p>
+                      ) : null}
+
+                      <p className="mt-3 text-sm leading-7 text-gray-700">
                         <span className="font-semibold text-gray-900">
                           Objectif :
                         </span>{" "}
@@ -90,15 +127,17 @@ export default function RealisationsPage() {
                       <div className="mt-5 flex items-center justify-between">
                         <Link
                           href="/contact"
-                          className="text-sm font-medium text-blue-600 underline underline-offset-4 hover:opacity-80"
+                          className="text-sm font-medium text-blue-600 transition hover:text-blue-700"
                         >
                           Lancer un projet similaire
                         </Link>
 
-                        <ArrowRight className="h-4 w-4 text-blue-600" />
+                        <div className="rounded-full bg-blue-50 p-2 text-blue-600 transition group-hover:bg-blue-100">
+                          <ArrowRight className="h-4 w-4" />
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  </article>
                 </Reveal>
               ))}
             </div>
@@ -106,19 +145,34 @@ export default function RealisationsPage() {
         </section>
 
         {/* CTA final */}
-        <section className="border-y bg-slate-50 py-20">
-          <div className="mx-auto max-w-6xl px-4">
+        <section className="relative overflow-hidden bg-white py-16 md:py-20">
+          <div className="pointer-events-none absolute inset-0 opacity-60">
+            <div className="absolute -top-28 left-1/3 h-[320px] w-[320px] rounded-full bg-indigo-500/8 blur-3xl" />
+            <div className="absolute bottom-[-100px] right-1/4 h-[300px] w-[300px] rounded-full bg-cyan-400/8 blur-3xl" />
+          </div>
+
+          <div className="pointer-events-none absolute inset-0 opacity-[0.04]">
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(0,0,0,0.5)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.5)_1px,transparent_1px)] bg-[size:44px_44px]" />
+          </div>
+
+          <div className="relative z-10 mx-auto max-w-6xl px-4">
             <Reveal>
-              <div className="rounded-3xl border bg-white p-10 shadow-sm">
+              <div className="rounded-3xl border bg-white p-10 shadow-sm shadow-[0_0_40px_rgba(34,211,238,0.08)]">
                 <div className="grid gap-6 md:grid-cols-3 md:items-center">
                   <div className="md:col-span-2">
-                    <h3 className="text-2xl font-bold text-gray-900">
+                    <div className="inline-flex items-center gap-2 rounded-full border bg-white px-4 py-2 text-xs font-medium text-gray-800 shadow-sm">
+                      <Sparkles className="h-4 w-4 text-cyan-500" />
+                      Nouveau projet
+                    </div>
+
+                    <h3 className="mt-4 text-2xl font-bold text-gray-900">
                       Tu veux un projet comme ça ?
                     </h3>
                     <p className="mt-2 text-gray-700">
                       Dis-nous ton activité + ville + objectif. On te propose une solution adaptée.
                     </p>
                   </div>
+
                   <div className="flex flex-col gap-3">
                     <Link
                       href="/contact"
