@@ -10,13 +10,13 @@ type Props = {
   primaryHref?: string;
   secondaryLabel?: string;
   secondaryHref?: string;
-  whatsappHref?: string; // si tu veux un bouton WhatsApp direct
+  whatsappHref?: string;
 };
 
 export default function FinalCTA({
   badge = "Prêt à lancer ?",
-  title = "On te propose un plan clair pour attirer des clients",
-  subtitle = "Dis-nous ton activité, ta ville et ton objectif (leads / RDV / ventes). On te répond rapidement.",
+  title = "On te propose un plan clair pour générer des clients",
+  subtitle = "Dis-nous ton activité, ta ville et ton objectif (leads / RDV / ventes). On te répond rapidement avec une proposition concrète.",
   primaryLabel = "Demander un devis",
   primaryHref = "/contact",
   secondaryLabel = "Voir les tarifs",
@@ -24,49 +24,62 @@ export default function FinalCTA({
   whatsappHref,
 }: Props) {
   return (
-    <section className="border-t bg-slate-50 py-20">
-      <div className="mx-auto max-w-6xl px-4">
-        <Reveal>
-          <div className="relative overflow-hidden rounded-3xl border bg-white p-10 shadow-sm">
-            {/* Soft background */}
-            <div className="pointer-events-none absolute inset-0 opacity-70">
-              <div className="absolute -top-24 -right-24 h-72 w-72 rounded-full bg-blue-100 blur-3xl" />
-              <div className="absolute -bottom-24 -left-24 h-72 w-72 rounded-full bg-indigo-100 blur-3xl" />
-            </div>
+    <section className="relative overflow-hidden bg-slate-950 py-16 md:py-20 text-white">
+      {/* Glow background */}
+      <div className="pointer-events-none absolute inset-0 opacity-70">
+        <div className="absolute -top-32 left-1/2 h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-indigo-600/25 blur-3xl" />
+        <div className="absolute bottom-[-160px] right-[-120px] h-[420px] w-[420px] rounded-full bg-cyan-400/15 blur-3xl" />
+      </div>
 
-            <div className="relative grid gap-8 md:grid-cols-3 md:items-center">
-              {/* Text */}
+      {/* Grid texture */}
+      <div className="pointer-events-none absolute inset-0 opacity-[0.18] [mask-image:radial-gradient(55%_55%_at_50%_30%,#000_0%,transparent_72%)]">
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.08)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.08)_1px,transparent_1px)] bg-[size:44px_44px]" />
+      </div>
+
+      <div className="relative z-10 mx-auto max-w-6xl px-4">
+        <Reveal>
+          <div className="relative overflow-hidden rounded-3xl border border-white/12 bg-white/5 p-10 backdrop-blur">
+
+            {/* Content grid */}
+            <div className="grid gap-8 md:grid-cols-3 md:items-center">
+
+              {/* LEFT TEXT */}
               <div className="md:col-span-2">
-                <div className="inline-flex items-center gap-2 rounded-full border bg-white/80 px-4 py-2 text-xs font-medium text-gray-800 shadow-sm backdrop-blur">
-                  <Sparkles className="h-4 w-4 text-blue-600" />
+                <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-xs font-medium text-white/90 backdrop-blur">
+                  <Sparkles className="h-4 w-4 text-cyan-300" />
                   {badge}
                 </div>
 
-                <h3 className="mt-5 text-2xl font-bold text-gray-900 md:text-3xl">
-                  {title}
+                <h3 className="mt-5 text-2xl font-bold md:text-3xl">
+                  <span className="bg-gradient-to-r from-cyan-300 via-indigo-300 to-violet-300 bg-clip-text text-transparent">
+                    {title}
+                  </span>
                 </h3>
 
-                <p className="mt-3 text-gray-700">{subtitle}</p>
+                <p className="mt-3 text-white/75">
+                  {subtitle}
+                </p>
 
-                {/* Mini trust line */}
-                <div className="mt-5 flex flex-wrap gap-3 text-xs text-gray-600">
-                  <span className="rounded-full border bg-white/70 px-3 py-1.5 backdrop-blur">
+                {/* Trust line */}
+                <div className="mt-5 flex flex-wrap gap-3 text-xs text-white/70">
+                  <span className="rounded-full border border-white/15 bg-white/5 px-3 py-1.5 backdrop-blur">
                     Réponse rapide
                   </span>
-                  <span className="rounded-full border bg-white/70 px-3 py-1.5 backdrop-blur">
+                  <span className="rounded-full border border-white/15 bg-white/5 px-3 py-1.5 backdrop-blur">
                     Casablanca • Maroc
                   </span>
-                  <span className="rounded-full border bg-white/70 px-3 py-1.5 backdrop-blur">
+                  <span className="rounded-full border border-white/15 bg-white/5 px-3 py-1.5 backdrop-blur">
                     Devis clair
                   </span>
                 </div>
               </div>
 
-              {/* CTAs */}
+              {/* RIGHT CTAs */}
               <div className="flex flex-col gap-3">
+
                 <Link
                   href={primaryHref}
-                  className="inline-flex items-center justify-center gap-2 rounded-full bg-blue-600 px-6 py-3 text-sm font-medium text-white shadow-sm shadow-blue-600/20 transition-all duration-300 hover:bg-blue-700 hover:scale-[1.01]"
+                  className="inline-flex items-center justify-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-medium text-slate-950 transition hover:opacity-95"
                 >
                   {primaryLabel}
                   <ArrowRight className="h-4 w-4" />
@@ -74,7 +87,7 @@ export default function FinalCTA({
 
                 <Link
                   href={secondaryHref}
-                  className="inline-flex items-center justify-center gap-2 rounded-full border border-blue-600 bg-white/80 px-6 py-3 text-sm font-medium text-blue-600 backdrop-blur transition-all duration-300 hover:bg-blue-600 hover:text-white hover:scale-[1.01]"
+                  className="inline-flex items-center justify-center gap-2 rounded-full border border-white/15 bg-white/5 px-6 py-3 text-sm font-medium text-white transition hover:bg-white/10"
                 >
                   {secondaryLabel}
                 </Link>
@@ -84,17 +97,18 @@ export default function FinalCTA({
                     href={whatsappHref}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center justify-center gap-2 rounded-full border bg-white px-6 py-3 text-sm font-medium text-gray-900 transition hover:bg-gray-50"
+                    className="inline-flex items-center justify-center gap-2 rounded-full border border-white/15 bg-white/5 px-6 py-3 text-sm font-medium text-white transition hover:bg-white/10"
                   >
-                    <MessageCircle className="h-4 w-4 text-blue-600" />
+                    <MessageCircle className="h-4 w-4 text-cyan-300" />
                     WhatsApp
                   </a>
                 ) : null}
 
-                <p className="text-center text-xs text-gray-500">
+                <p className="text-center text-xs text-white/60">
                   2 minutes pour expliquer ton besoin.
                 </p>
               </div>
+
             </div>
           </div>
         </Reveal>
