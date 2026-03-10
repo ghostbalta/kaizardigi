@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Kaizardigi",
+  title: "Kaizardigi | Création de sites web & automatisation IA",
   description: "Agence digitale au Maroc • Web • SEO • Automatisation IA",
 };
 
