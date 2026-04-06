@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import PageHeader from "@/components/ui/PageHeader";
@@ -14,8 +15,8 @@ import {
   Sparkles,
 } from "lucide-react";
 
-const WHATSAPP = "https://wa.me/212600000000"; // remplace
-const EMAIL = "contact@kaizardigi.com"; // remplace
+const WHATSAPP = "https://wa.me/212644567165"; // remplace par ton vrai numéro
+const EMAIL = "contact@kaizardigi.com"; // remplace si besoin
 
 const quickSteps = [
   { title: "1) Activité + ville", desc: "Ex: salon beauté, Casablanca" },
@@ -25,6 +26,73 @@ const quickSteps = [
 ];
 
 export default function ContactPage() {
+  const [formData, setFormData] = useState({
+    name: "",
+    phone: "",
+    email: "",
+    service: "",
+    message: "",
+  });
+
+  const [loading, setLoading] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    setLoading(true);
+    setSuccessMessage("");
+    setErrorMessage("");
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || "Une erreur est survenue.");
+      }
+
+      setSuccessMessage("Votre demande a bien été envoyée.");
+
+      setFormData({
+        name: "",
+        phone: "",
+        email: "",
+        service: "",
+        message: "",
+      });
+
+      setTimeout(() => {
+        window.location.href = WHATSAPP;
+      }, 1500);
+    } catch (error: any) {
+      setErrorMessage(
+        error?.message || "Impossible d’envoyer le formulaire."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       <Navbar />
@@ -78,13 +146,12 @@ export default function ContactPage() {
                     href={WHATSAPP}
                     target="_blank"
                     rel="noreferrer"
-                    className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-blue-600 px-6 py-3 text-sm font-medium text-white hover:bg-blue-700 transition"
+                    className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-blue-600 px-6 py-3 text-sm font-medium text-white transition hover:bg-blue-700"
                   >
                     <MessageCircle className="h-4 w-4" />
                     Ouvrir WhatsApp
                   </a>
 
-                  {/* Quick steps */}
                   <div className="mt-8 rounded-3xl border bg-white p-6 shadow-sm">
                     <div className="flex items-center gap-2 text-sm font-semibold text-gray-900">
                       <ShieldCheck className="h-4 w-4 text-cyan-600" />
@@ -113,7 +180,6 @@ export default function ContactPage() {
                     </div>
                   </div>
 
-                  {/* Contact info */}
                   <div className="mt-8 space-y-4 text-sm text-gray-800">
                     <div className="flex items-center gap-3">
                       <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-cyan-50 ring-1 ring-cyan-200">
@@ -142,13 +208,13 @@ export default function ContactPage() {
                   <div className="mt-7 flex flex-wrap gap-3">
                     <Link
                       href="/services"
-                      className="rounded-full border border-slate-200 px-5 py-2.5 text-sm font-medium text-gray-700 hover:bg-slate-50 transition"
+                      className="rounded-full border border-slate-200 px-5 py-2.5 text-sm font-medium text-gray-700 transition hover:bg-slate-50"
                     >
                       Voir les services
                     </Link>
                     <Link
                       href="/automatisation-ia"
-                      className="rounded-full border border-blue-600 px-5 py-2.5 text-sm font-medium text-blue-600 hover:bg-blue-600 hover:text-white transition"
+                      className="rounded-full border border-blue-600 px-5 py-2.5 text-sm font-medium text-blue-600 transition hover:bg-blue-600 hover:text-white"
                     >
                       Offre IA
                     </Link>
@@ -168,10 +234,10 @@ export default function ContactPage() {
                     Décris ton besoin
                   </h2>
                   <p className="mt-2 text-sm leading-7 text-gray-700">
-                    Décris ton besoin. (On branchera n8n après pour automatiser.)
+                    Décris ton besoin. On te répond rapidement avec une proposition adaptée.
                   </p>
 
-                  <form className="mt-6 grid gap-4">
+                  <form onSubmit={handleSubmit} className="mt-6 grid gap-4">
                     <div className="grid gap-4 md:grid-cols-2">
                       <div>
                         <label className="mb-2 block text-xs font-medium text-gray-700">
@@ -181,6 +247,8 @@ export default function ContactPage() {
                           className="w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-gray-900 placeholder:text-gray-500 outline-none transition focus:border-cyan-300 focus:ring-4 focus:ring-cyan-100"
                           placeholder="Ton nom"
                           name="name"
+                          value={formData.name}
+                          onChange={handleChange}
                           required
                         />
                       </div>
@@ -193,6 +261,8 @@ export default function ContactPage() {
                           className="w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-gray-900 placeholder:text-gray-500 outline-none transition focus:border-indigo-300 focus:ring-4 focus:ring-indigo-100"
                           placeholder="06..."
                           name="phone"
+                          value={formData.phone}
+                          onChange={handleChange}
                           required
                         />
                       </div>
@@ -207,6 +277,8 @@ export default function ContactPage() {
                         placeholder="email@exemple.com"
                         name="email"
                         type="email"
+                        value={formData.email}
+                        onChange={handleChange}
                       />
                     </div>
 
@@ -217,7 +289,8 @@ export default function ContactPage() {
                       <select
                         className="w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-gray-900 outline-none transition focus:border-cyan-300 focus:ring-4 focus:ring-cyan-100"
                         name="service"
-                        defaultValue=""
+                        value={formData.service}
+                        onChange={handleChange}
                         required
                       >
                         <option value="" disabled>
@@ -238,16 +311,27 @@ export default function ContactPage() {
                         className="min-h-[170px] w-full rounded-2xl border border-slate-200 px-4 py-3 text-sm text-gray-900 placeholder:text-gray-500 outline-none transition focus:border-indigo-300 focus:ring-4 focus:ring-indigo-100"
                         placeholder="Activité + ville + objectif + budget (optionnel) + délai..."
                         name="message"
+                        value={formData.message}
+                        onChange={handleChange}
                         required
                       />
                     </div>
 
                     <button
                       type="submit"
-                      className="rounded-full bg-blue-600 px-6 py-3 text-sm font-medium text-white hover:bg-blue-700 transition"
+                      disabled={loading}
+                      className="rounded-full bg-blue-600 px-6 py-3 text-sm font-medium text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-70"
                     >
-                      Envoyer
+                      {loading ? "Envoi en cours..." : "Envoyer"}
                     </button>
+
+                    {successMessage && (
+                      <p className="text-sm text-green-600">{successMessage}</p>
+                    )}
+
+                    {errorMessage && (
+                      <p className="text-sm text-red-600">{errorMessage}</p>
+                    )}
 
                     <p className="text-xs text-gray-500">
                       Conseil : si c’est urgent, WhatsApp est plus rapide.

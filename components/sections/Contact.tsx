@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import {
   Mail,
@@ -13,8 +14,76 @@ const WHATSAPP = "https://wa.me/212600000000"; // remplace
 const EMAIL = "contact@kaizardigi.com"; // adapte si besoin
 
 export default function Contact() {
+  const [formData, setFormData] = useState({
+    name: "",
+    phone: "",
+    email: "",
+    service: "",
+    message: "",
+  });
+
+  const [loading, setLoading] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    setLoading(true);
+    setSuccessMessage("");
+    setErrorMessage("");
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || "Une erreur est survenue.");
+      }
+
+      setSuccessMessage("Votre demande a bien été envoyée.");
+      setFormData({
+        name: "",
+        phone: "",
+        email: "",
+        service: "",
+        message: "",
+      });
+      setTimeout(() => {
+  window.location.href = "https://wa.me/212644567165";
+}, 1500);
+    } catch (error: any) {
+      setErrorMessage(
+        error?.message || "Impossible d’envoyer le formulaire."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <section id="contact" className="relative overflow-hidden bg-white py-16 md:py-20">
+    <section
+      id="contact"
+      className="relative overflow-hidden bg-white py-16 md:py-20"
+    >
       {/* Futur glow subtil */}
       <div className="pointer-events-none absolute inset-0 opacity-60">
         <div className="absolute -top-40 left-1/2 h-[520px] w-[520px] -translate-x-1/2 rounded-full bg-indigo-500/8 blur-3xl" />
@@ -43,7 +112,8 @@ export default function Contact() {
 
           <p className="mt-3 text-lg text-gray-700">
             Expliquez votre besoin. On vous répond rapidement, avec une
-            recommandation claire selon votre activité, votre ville et votre objectif.
+            recommandation claire selon votre activité, votre ville et votre
+            objectif.
           </p>
         </div>
 
@@ -132,18 +202,23 @@ export default function Contact() {
               objectif. Nous reviendrons vers vous avec une proposition adaptée.
             </p>
 
-            <form className="mt-6 grid gap-4">
+            <form onSubmit={handleSubmit} className="mt-6 grid gap-4">
               <div className="grid gap-4 md:grid-cols-2">
                 <input
                   className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-gray-900 placeholder:text-gray-500 outline-none transition focus:border-cyan-300 focus:ring-4 focus:ring-cyan-100"
                   placeholder="Nom"
                   name="name"
+                  value={formData.name}
+                  onChange={handleChange}
                   required
                 />
+
                 <input
                   className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-gray-900 placeholder:text-gray-500 outline-none transition focus:border-indigo-300 focus:ring-4 focus:ring-indigo-100"
                   placeholder="Téléphone"
                   name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
                   required
                 />
               </div>
@@ -153,13 +228,16 @@ export default function Contact() {
                 placeholder="Email (optionnel)"
                 name="email"
                 type="email"
+                value={formData.email}
+                onChange={handleChange}
               />
 
               <select
                 className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-gray-900 outline-none transition focus:border-cyan-300 focus:ring-4 focus:ring-cyan-100"
                 name="service"
                 required
-                defaultValue=""
+                value={formData.service}
+                onChange={handleChange}
               >
                 <option value="" disabled>
                   Service demandé
@@ -174,17 +252,28 @@ export default function Contact() {
                 className="min-h-[150px] rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm text-gray-900 placeholder:text-gray-500 outline-none transition focus:border-indigo-300 focus:ring-4 focus:ring-indigo-100"
                 placeholder="Décrivez votre besoin (activité, ville, objectif, budget si possible)"
                 name="message"
+                value={formData.message}
+                onChange={handleChange}
                 required
               />
 
               <button
                 type="submit"
-                className="inline-flex items-center justify-center gap-2 rounded-full bg-blue-600 px-6 py-3 text-sm font-medium text-white transition hover:bg-blue-700"
+                disabled={loading}
+                className="inline-flex items-center justify-center gap-2 rounded-full bg-blue-600 px-6 py-3 text-sm font-medium text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-70"
               >
-                Envoyer la demande
+                {loading ? "Envoi en cours..." : "Envoyer la demande"}
                 <ArrowRight className="h-4 w-4" />
               </button>
             </form>
+
+            {successMessage && (
+              <p className="mt-4 text-sm text-green-600">{successMessage}</p>
+            )}
+
+            {errorMessage && (
+              <p className="mt-4 text-sm text-red-600">{errorMessage}</p>
+            )}
 
             <p className="mt-4 text-xs text-gray-500">
               Réponse rapide selon la charge en cours. Pour aller plus vite,
