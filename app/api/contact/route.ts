@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+export const dynamic = "force-dynamic";
 
 export async function POST(req: Request) {
   try {
@@ -15,19 +15,24 @@ export async function POST(req: Request) {
       );
     }
 
-    if (!process.env.RESEND_API_KEY) {
+    const resendApiKey = process.env.RESEND_API_KEY;
+    const toEmail = process.env.CONTACT_TO_EMAIL;
+
+    if (!resendApiKey) {
       return NextResponse.json(
-        { error: "RESEND_API_KEY manquante dans .env.local" },
+        { error: "RESEND_API_KEY manquante." },
         { status: 500 }
       );
     }
 
-    if (!process.env.CONTACT_TO_EMAIL) {
+    if (!toEmail) {
       return NextResponse.json(
-        { error: "CONTACT_TO_EMAIL manquante dans .env.local" },
+        { error: "CONTACT_TO_EMAIL manquante." },
         { status: 500 }
       );
     }
+
+    const resend = new Resend(resendApiKey);
 
     const serviceLabels: Record<string, string> = {
       site: "Création de site web",
@@ -40,7 +45,7 @@ export async function POST(req: Request) {
 
     const { data, error } = await resend.emails.send({
       from: "Kaizardigi Contact <onboarding@resend.dev>",
-      to: [process.env.CONTACT_TO_EMAIL],
+      to: [toEmail],
       subject: `Nouveau lead site web - ${name}`,
       replyTo: email || undefined,
       html: `
