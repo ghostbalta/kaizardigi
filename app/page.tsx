@@ -11,6 +11,7 @@ import PortfolioPreview from "@/components/sections/PortfolioPreview";
 import AutomationPreview from "@/components/sections/AutomationPreview";
 import Offers from "@/components/sections/Offers";
 import Contact from "@/components/sections/Contact";
+import Testimonials from "@/components/sections/Testimonials";
 
 import MatrixSection from "@/components/ui/MatrixSection";
 
@@ -30,7 +31,7 @@ export default function Home() {
         <MatrixSection className="py-20 bg-white" columns={20} opacity={0.12}>
           <AutomationPreview />
         </MatrixSection>
-
+<Testimonials />
         <PortfolioPreview />
         <FAQ />
         <Contact />

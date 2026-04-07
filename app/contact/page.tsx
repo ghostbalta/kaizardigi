@@ -80,6 +80,9 @@ export default function ContactPage() {
         service: "",
         message: "",
       });
+      if (typeof window !== "undefined" && (window as any).fbq) {
+  (window as any).fbq('track', 'Lead');
+}
 
       setTimeout(() => {
         window.location.href = WHATSAPP;

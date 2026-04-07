@@ -4,15 +4,21 @@ import Link from "next/link";
 import { MessageCircle } from "lucide-react";
 
 type Props = {
-  phone?: string; // format international sans +, ex: 2126xxxxxxx
+  phone?: string;
   message?: string;
 };
 
 export default function WhatsAppFloating({
-  phone = "212600000000",
+  phone = "212644567165",
   message = "Salam, je veux un devis.",
 }: Props) {
   const href = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+
+  const handleClick = () => {
+    if (typeof window !== "undefined" && (window as any).fbq) {
+      (window as any).fbq("track", "Contact");
+    }
+  };
 
   return (
     <div className="fixed bottom-5 right-5 z-50">
@@ -20,6 +26,7 @@ export default function WhatsAppFloating({
         href={href}
         target="_blank"
         rel="noreferrer"
+        onClick={handleClick} // 🔥 ICI
         className="group flex items-center gap-3 rounded-full bg-blue-600 px-4 py-3 text-white shadow-lg shadow-blue-600/20 transition hover:-translate-y-0.5 hover:bg-blue-700"
         aria-label="Contacter Kaizardigi sur WhatsApp"
       >
