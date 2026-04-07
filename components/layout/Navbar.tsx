@@ -17,7 +17,7 @@ import {
 } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
-const WHATSAPP = "https://wa.me/212679806345";
+const WHATSAPP = "https://wa.me/212644567165";
 const LOGO_SRC = "/logokaizardigi.png";
 
 const nav = [

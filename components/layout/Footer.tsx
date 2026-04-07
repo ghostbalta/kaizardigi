@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Mail, MapPin, MessageCircle, Sparkles } from "lucide-react";
 
-const WHATSAPP = "https://wa.me/212600000000"; // remplace
+const WHATSAPP = "https://wa.me/212644567165"; // remplace
 const EMAIL = "contact@kaizardigi.com";
 
 export default function Footer() {
