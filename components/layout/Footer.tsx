@@ -155,10 +155,10 @@ export default function Footer() {
           <div>© {new Date().getFullYear()} Kaizardigi. Tous droits réservés.</div>
 
           <div className="flex flex-wrap gap-4">
-            <Link href="/privacy" className="transition hover:text-blue-600">
+            <Link href="/politique-de-confidentialite" className="transition hover:text-blue-600">
               Politique de confidentialité
             </Link>
-            <Link href="/terms" className="transition hover:text-blue-600">
+            <Link href="/politique-des-conditions" className="transition hover:text-blue-600">
               Conditions
             </Link>
           </div>
