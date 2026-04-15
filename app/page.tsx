@@ -39,7 +39,7 @@ export default function Home() {
         {/* ✅ Matrix here (closing CTA premium) */}
         <MatrixSection className="py-0 bg-slate-50" columns={16} opacity={0.10}>
           <FinalCTA
-            whatsappHref="https://wa.me/212679806345?text=Salam%2C%20je%20veux%20un%20devis%20pour%20mon%20business."
+            whatsappHref="https://wa.me/212644567165?text=Salam%2C%20je%20veux%20un%20devis%20pour%20mon%20business."
           />
         </MatrixSection>
       </main>
